@@ -251,4 +251,106 @@ return {
       "nvim-lua/plenary.nvim",
     },
   },
+  {
+    "stevearc/conform.nvim",
+    event = "BufWritePre",
+    config = function()
+      require "configs.conform"
+    end,
+  },
+  {
+    "neovim/nvim-lspconfig",
+    config = function()
+      require("nvchad.configs.lspconfig").defaults()
+      require "configs.lspconfig"
+    end,
+  },
+  {
+    "jose-elias-alvarez/null-ls.nvim",
+    event = "BufReadPre",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("null-ls").setup {
+        sources = {
+          require("null-ls").builtins.diagnostics.eslint_d,
+          require("null-ls").builtins.code_actions.eslint_d,
+        },
+      }
+    end,
+  },
+  {
+    "mfussenegger/nvim-lint",
+    event = "VeryLazy",
+    config = function()
+      require "configs.lint"
+    end,
+  },
+  {
+    "nvim-tree/nvim-tree.lua",
+    config = function()
+      require("nvim-tree").setup {
+        renderer = {
+          root_folder_label = false,
+        },
+        diagnostics = {
+          enable = true,
+          icons = {
+            hint = "",
+            info = "",
+            warning = "",
+            error = "",
+          },
+        },
+      }
+    end,
+  },
+  {
+    "folke/trouble.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require("trouble").setup {
+        mode = "workspace_diagnostics",
+        signs = {
+          error = "",
+          warning = "",
+          hint = "",
+          information = "",
+        },
+        use_diagnostic_signs = true,
+      }
+    end,
+  },
+  {
+    "Wansmer/langmapper.nvim",
+    lazy = false,
+    priority = 1,
+    config = function()
+      require("langmapper").setup {}
+    end,
+  },
+  {
+    "brenton-leighton/multiple-cursors.nvim",
+    version = "*",
+    opts = {},
+    keys = {
+      {
+        "<C-j>",
+        "<Cmd>MultipleCursorsAddDown<CR>",
+        mode = { "n", "x" },
+        desc = "Добавить курсор и переместить вниз",
+      },
+      {
+        "<C-k>",
+        "<Cmd>MultipleCursorsAddUp<CR>",
+        mode = { "n", "x" },
+        desc = "Добавить курсор и переместить вверх",
+      },
+      {
+        "<C-LeftMouse>",
+        "<Cmd>MultipleCursorsMouseAddDelete<CR>",
+        mode = { "n", "i" },
+        desc = "Добавить или удалить курсор",
+      },
+    },
+  },
 }
