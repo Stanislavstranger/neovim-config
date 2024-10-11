@@ -301,6 +301,9 @@ return {
             error = "",
           },
         },
+        git = {
+          ignore = false,
+        },
       }
     end,
   },
@@ -352,5 +355,12 @@ return {
         desc = "Добавить или удалить курсор",
       },
     },
+  },
+  {
+    "diepm/vim-rest-console",
+    lazy = false,
+    config = function()
+      require "configs.vim-rest-console"
+    end,
   },
 }

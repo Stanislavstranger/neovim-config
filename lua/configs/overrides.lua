@@ -35,6 +35,7 @@ M.mason = {
     "node-debug2-adapter",
     "gopls",
     "gradle_ls",
+    "emmet-language-server",
   },
 }
 

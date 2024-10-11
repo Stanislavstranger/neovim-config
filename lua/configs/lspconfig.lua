@@ -13,6 +13,12 @@ vim.diagnostic.config {
   severity_sort = true, -- Сортировка диагностик по уровню серьезности
 }
 
+vim.api.nvim_create_autocmd("CursorHold", {
+  callback = function()
+    vim.diagnostic.open_float(nil, { focusable = true })
+  end,
+})
+
 local null_ls = require "null-ls"
 
 -- Настройка null-ls для использования ESLint
@@ -25,7 +31,17 @@ null_ls.setup {
 }
 
 -- if you just want default config for the servers then put them in a table
-local servers = { "html", "cssls", "tsserver", "clangd", "gopls", "gradle_ls", "emmet-language-server" }
+local servers = {
+  "html",
+  "cssls",
+  "typescript-language-server",
+  "clangd",
+  "gopls",
+  "gradle_ls",
+  "emmet-language-server",
+  "docker-compose-language-service",
+  "dockerfile-language-server",
+}
 
 local function organize_imports()
   local params = {
@@ -36,6 +52,9 @@ local function organize_imports()
 end
 
 for _, lsp in ipairs(servers) do
+  -- if lsp == "typescript-language-server" then
+  --   lsp = "ts-ls"
+  -- end
   lspconfig[lsp].setup {
     on_attach = on_attach,
     capabilities = capabilities,

@@ -90,4 +90,10 @@ map("i", "<C-g>", function()
   return vim.fn["codeium#Accept"]()
 end, { expr = true })
 
+--LSP Restart
+map("n", "<leader>lr", ":LspRestart<CR>", { desc = "LSP Restart" })
+
+-- REST request
+map("n", "<leader>rr", ":call VrcQuery()<CR>", { desc = "Rest Request" })
+
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
