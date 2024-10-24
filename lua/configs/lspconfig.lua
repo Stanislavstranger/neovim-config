@@ -4,6 +4,9 @@ local on_attach = configs.on_attach
 local capabilities = configs.capabilities
 
 local lspconfig = require "lspconfig"
+local function db_completion()
+  require("cmp").setup.buffer { sources = { { name = "vim-dadbod-completion" } } }
+end
 
 vim.diagnostic.config {
   virtual_text = true, -- Отображение ошибок непосредственно в коде
@@ -16,6 +19,24 @@ vim.diagnostic.config {
 vim.api.nvim_create_autocmd("CursorHold", {
   callback = function()
     vim.diagnostic.open_float(nil, { focusable = true })
+  end,
+})
+
+vim.g.db_ui_save_location = vim.fn.stdpath "config" .. require("plenary.path").path.sep .. "db_ui"
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = {
+    "sql",
+  },
+  command = [[setlocal omnifunc=vim_dadbod_completion#omni]],
+})
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = {
+    "sql",
+    "mysql",
+    "plsql",
+  },
+  callback = function()
+    vim.schedule(db_completion)
   end,
 })
 
@@ -41,6 +62,7 @@ local servers = {
   "emmet-language-server",
   "docker-compose-language-service",
   "dockerfile-language-server",
+  "sqlls",
 }
 
 local function organize_imports()

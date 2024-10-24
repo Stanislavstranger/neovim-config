@@ -56,6 +56,7 @@ map("n", "<leader>gt", ":DiffviewToggleFile<CR>", { desc = "Git File History" })
 map("n", "<leader>gp", ":Gitsigns preview_hunk_inline<CR>", { desc = "Gitsigns priview hunk inline" })
 map("n", "<leader>gr", ":Gitsigns reset_hunk<CR>", { desc = "Gitsigns reset hunk" })
 map("n", "<leader>lg", ":LazyGit<CR>", { desc = "LazyGit" })
+map("n", "<leader>gf", ":Git diff<CR>", { desc = "Git diff" })
 
 --Edit
 map("n", "<leader>pe", ":Telescope emoji<CR>", { desc = "Paste emoji" })
@@ -95,5 +96,8 @@ map("n", "<leader>lr", ":LspRestart<CR>", { desc = "LSP Restart" })
 
 -- REST request
 map("n", "<leader>rr", ":call VrcQuery()<CR>", { desc = "Rest Request" })
+
+-- DBUI
+map("n", "<leader>db", ":DBUI<CR>", { desc = "DBUI" })
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")

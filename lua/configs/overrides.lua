@@ -15,6 +15,7 @@ M.treesitter = {
     "prisma",
     "vue",
     "go",
+    "sql",
   },
   indent = {
     enable = true,
