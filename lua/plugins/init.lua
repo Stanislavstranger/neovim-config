@@ -115,6 +115,7 @@ return {
               return vim.fn.getcwd()
             end,
           },
+          require "neotest-vitest",
         },
       }
     end,
@@ -123,6 +124,7 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "antoinemadec/FixCursorHold.nvim",
       "haydenmeade/neotest-jest",
+      "marilari88/neotest-vitest",
     },
   },
   {
@@ -211,9 +213,13 @@ return {
       require("todo-comments").setup()
     end,
   }, -- To make a plugin not be loaded
+  -- {
+  --   "Exafunction/codeium.vim",
+  --   lazy = false,
+  -- },
   {
     "Exafunction/codeium.vim",
-    lazy = false,
+    event = "BufEnter",
   },
   {
     "lewis6991/gitsigns.nvim",
@@ -249,6 +255,25 @@ return {
     -- optional for floating window border decoration
     dependencies = {
       "nvim-lua/plenary.nvim",
+    },
+  },
+  {
+    "mgierada/lazydocker.nvim",
+    dependencies = { "akinsho/toggleterm.nvim" },
+    config = function()
+      require("lazydocker").setup {
+        border = "curved",
+      }
+    end,
+    event = "BufRead",
+    keys = {
+      {
+        "<leader>ld",
+        function()
+          require("lazydocker").open()
+        end,
+        desc = "Open Lazydocker floating window",
+      },
     },
   },
   {
@@ -291,6 +316,10 @@ return {
       require("nvim-tree").setup {
         renderer = {
           root_folder_label = false,
+          highlight_opened_files = "name",
+          indent_markers = {
+            enable = true,
+          },
         },
         diagnostics = {
           enable = true,

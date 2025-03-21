@@ -57,12 +57,11 @@ map("n", "<leader>gp", ":Gitsigns preview_hunk_inline<CR>", { desc = "Gitsigns p
 map("n", "<leader>gr", ":Gitsigns reset_hunk<CR>", { desc = "Gitsigns reset hunk" })
 map("n", "<leader>lg", ":LazyGit<CR>", { desc = "LazyGit" })
 map("n", "<leader>gf", ":Git diff<CR>", { desc = "Git diff" })
+map("n", "<leader>gbl", ":Gitsigns blame_line<CR>", { desc = "Gitsigns blame line" })
+map("n", "<leader>gbf", ":Gitsigns blame<CR>", { desc = "Gitsigns blame" })
 
 --Edit
 map("n", "<leader>pe", ":Telescope emoji<CR>", { desc = "Paste emoji" })
-
---REST
-map("n", "<leader>at", ":Atac<CR>", { desc = "Atac" })
 
 -- Terminal
 map("n", "<C-]>", function()
@@ -94,8 +93,9 @@ end, { expr = true })
 --LSP Restart
 map("n", "<leader>lr", ":LspRestart<CR>", { desc = "LSP Restart" })
 
--- REST request
+-- REST
 map("n", "<leader>rr", ":call VrcQuery()<CR>", { desc = "Rest Request" })
+map("n", "<leader>at", ":Atac<CR>", { desc = "Atac" })
 
 -- DBUI
 map("n", "<leader>db", ":DBUI<CR>", { desc = "DBUI" })
