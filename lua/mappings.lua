@@ -4,12 +4,58 @@ local map = vim.keymap.set
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("n", "<leader>w", "<cmd>w<CR>", { desc = "Save" })
+map("n", "<leader>x", "<cmd>bdelete<CR>", { desc = "Close Buffer" })
+map("n", "<leader>q", function()
+  local current_buf = vim.api.nvim_get_current_buf()
+  local bufs = vim.fn.getbufinfo({ buflisted = 1 })
+
+  -- If there's only one listed buffer, we need to handle it specially to keep the window open.
+  if #bufs <= 1 then
+    if vim.bo[current_buf].modified then
+      local choice = vim.fn.confirm("Buffer has unsaved changes. Save?", "&Yes\n&No\n&Cancel")
+      if choice == 1 then -- Yes
+        vim.cmd("write")
+      elseif choice == 3 then -- Cancel
+        return -- Abort the operation
+      end
+    end
+    vim.cmd("enew | bdelete#")
+    return
+  end
+
+  -- If there are multiple listed buffers, we can try to switch to another one.
+  local next_buf = -1
+  for _, buf_info in ipairs(bufs) do
+    if buf_info.bufnr ~= current_buf then
+      next_buf = buf_info.bufnr
+      break
+    end
+  end
+
+  if next_buf ~= -1 then
+    vim.api.nvim_set_current_buf(next_buf)
+    vim.cmd("confirm bdelete " .. current_buf)
+  else
+    -- Fallback: This case should ideally not be reached if #bufs > 1 and next_buf is found.
+    -- But if it is, treat it like the single buffer case.
+    if vim.bo[current_buf].modified then
+      local choice = vim.fn.confirm("Buffer has unsaved changes. Save?", "&Yes\n&No\n&Cancel")
+      if choice == 1 then -- Yes
+        vim.cmd("write")
+      elseif choice == 3 then -- Cancel
+        return -- Abort the operation
+      end
+    end
+    vim.cmd("enew | bdelete#")
+  end
+end, { desc = "Close Buffer & Keep Window (with prompt)" })
 map("n", "<leader>cx", function()
   require("nvchad.tabufline").closeAllBufs()
 end, { desc = "Close All Buffers" })
 
 map("n", "<leader>ft", "<cmd>TodoTelescope<CR>", { desc = "Find Todo" })
 map("n", "\\", "<cmd>:vsplit <CR>", { desc = "Vertical Split" })
+map("n", "<leader>-", "<cmd>split<CR>", { desc = "Horizontal Split" })
 map("n", "<c-l>", "<cmd>:TmuxNavigateRight<cr>", { desc = "Tmux Right" })
 map("n", "<c-h>", "<cmd>:TmuxNavigateLeft<cr>", { desc = "Tmux Left" })
 map("n", "<c-k>", "<cmd>:TmuxNavigateUp<cr>", { desc = "Tmux Up" })
@@ -38,7 +84,7 @@ map("n", "<leader>ts", ":Neotest summary<CR>", { desc = "Show test summary" })
 map("n", "<leader>du", function()
   require("dapui").toggle()
 end, { desc = "Toggle Debug UI" })
-map("n", "<leader>db", function()
+map("n", "<leader>dbp", function()
   require("dap").toggle_breakpoint()
 end, { desc = "Toggle Breakpoint" })
 map("n", "<leader>ds", function()
@@ -98,6 +144,16 @@ map("n", "<leader>rr", ":call VrcQuery()<CR>", { desc = "Rest Request" })
 map("n", "<leader>at", ":Atac<CR>", { desc = "Atac" })
 
 -- DBUI
-map("n", "<leader>db", ":DBUI<CR>", { desc = "DBUI" })
+map("n", "<leader>dbb", ":DBUI<CR>", { desc = "DBUI" })
+
+map("n", "<leader>ft", ":NvimTreeFindFile<CR>", { desc = "NvimTreeFindFile" })
+
+map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", { desc = "Code Action" })
+
+-- Terminal mode mappings to pass Ctrl+h/j/k/l to the shell
+map("t", "<c-l>", "<C-l>", { desc = "Clear terminal screen" })
+map("t", "<c-h>", "<C-h>", { desc = "Terminal backspace" })
+map("t", "<c-j>", "<C-j>", { desc = "Terminal newline" })
+map("t", "<c-k>", "<C-k>", { desc = "Terminal up" })
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")

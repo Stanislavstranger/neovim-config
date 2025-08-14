@@ -1,5 +1,20 @@
 return {
   {
+    "hrsh7th/nvim-cmp",
+    event = "InsertEnter",
+    dependencies = {
+      "hrsh7th/cmp-buffer", -- source for text in buffer
+      "hrsh7th/cmp-path", -- source for file system paths
+      "L3MON4D3/LuaSnip", -- snippet engine
+      "saadparwaiz1/cmp_luasnip", -- for autocompletion
+      "rafamadriz/friendly-snippets", -- useful snippets
+      "hrsh7th/cmp-nvim-lsp",
+    },
+    config = function()
+      require "configs.cmp"
+    end,
+  },
+  {
     "stevearc/conform.nvim",
     event = "BufWritePre",
     config = function()
@@ -43,6 +58,8 @@ return {
         "gopls",
         "js-debug-adapter",
         "typescript-language-server",
+        "tailwindcss-language-server",
+        "svelte-language-server",
       },
     },
   },
@@ -56,9 +73,14 @@ return {
         "vimdoc",
         "html",
         "css",
+        "jsdoc",
+        "json",
+        "tsx",
         "typescript",
         "javascript",
         "go",
+        "svelte",
+        "sql",
       },
     },
   },
@@ -291,19 +313,6 @@ return {
     end,
   },
   {
-    "jose-elias-alvarez/null-ls.nvim",
-    event = "BufReadPre",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      require("null-ls").setup {
-        sources = {
-          require("null-ls").builtins.diagnostics.eslint_d,
-          require("null-ls").builtins.code_actions.eslint_d,
-        },
-      }
-    end,
-  },
-  {
     "mfussenegger/nvim-lint",
     event = "VeryLazy",
     config = function()
@@ -412,5 +421,22 @@ return {
       -- Your DBUI configuration
       vim.g.db_ui_use_nerd_fonts = 1
     end,
+  },
+  {
+    "ngtuonghy/live-server-nvim",
+    event = "VeryLazy",
+    build = ":LiveServerInstall",
+    config = function()
+      require("live-server-nvim").setup {}
+    end,
+  },
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    -- dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" }, -- if you use the mini.nvim suite
+    -- dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" }, -- if you use standalone mini plugins
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = { render_modes = { "n", "c", "t" } },
   },
 }

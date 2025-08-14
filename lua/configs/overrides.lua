@@ -31,12 +31,16 @@ M.mason = {
     "deno",
     "prettierd`",
     "eslint_d",
+    "eslint_lsp",
     "clangd",
     "clang-format",
     "node-debug2-adapter",
     "gopls",
     "gradle_ls",
-    "emmet-language-server",
+    "emmet-ls",
+    "dockerls",
+    "yaml-language-server",
+    "json-lsp",
   },
 }
 
