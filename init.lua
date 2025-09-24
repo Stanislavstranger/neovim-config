@@ -78,7 +78,130 @@ require("nvim-web-devicons").set_icon {
     icon = "󰒃",
     color = "#458588",
     cterm_color = "65",
-    name = "rest",
+    name = "guard",
+  },
+}
+
+require("nvim-web-devicons").set_icon {
+  ["sentry.client.config.ts"] = {
+    icon = "",
+    color = "#e1567c",
+    cterm_color = "65",
+    name = "sentry",
+  },
+  ["sentry.server.config.ts"] = {
+    icon = "",
+    color = "#e1567c",
+    cterm_color = "65",
+    name = "sentry",
+  },
+  ["sentry.edge.config.ts"] = {
+    icon = "",
+    color = "#e1567c",
+    cterm_color = "65",
+    name = "sentry",
+  },
+}
+
+require("nvim-web-devicons").set_icon {
+  ["playwright.config.ts"] = {
+    icon = "",
+    color = "#2ead33",
+    cterm_color = "65",
+    name = "playwright",
+  },
+}
+
+require("nvim-web-devicons").set_icon {
+  ["postcss.config.js"] = {
+    icon = "",
+    color = "#d6380a",
+    cterm_color = "65",
+    name = "postcss",
+  },
+}
+
+require("nvim-web-devicons").set_icon {
+  ["jest.config.ts"] = {
+    icon = "",
+    color = "#c03b13",
+    cterm_color = "65",
+    name = "jest",
+  },
+  ["jest.setup.ts"] = {
+    icon = "",
+    color = "#c03b13",
+    cterm_color = "65",
+    name = "jest",
+  },
+}
+
+require("nvim-web-devicons").set_icon {
+  [".env.example"] = {
+    icon = "",
+    color = "#fabd2f",
+    cterm_color = "65",
+    name = "env",
+  },
+}
+
+require("nvim-web-devicons").set_icon {
+  ["route.ts"] = {
+    icon = "󰑪",
+    color = "#b8bb26",
+    cterm_color = "65",
+    name = "route",
+  },
+  ["route.js"] = {
+    icon = "󰑪",
+    color = "#b8bb26",
+    cterm_color = "65",
+    name = "route",
+  },
+}
+
+require("nvim-web-devicons").set_icon {
+  ["error.tsx"] = {
+    icon = "",
+    color = "#c03b13",
+    cterm_color = "65",
+    name = "error",
+  },
+}
+
+require("nvim-web-devicons").set_icon {
+  ["cypress.config.ts"] = {
+    icon = "",
+    color = "#458588",
+    cterm_color = "65",
+    name = "sypress",
+  },
+}
+
+require("nvim-web-devicons").set_icon {
+  ["vite.config.ts"] = {
+    icon = "",
+    color = "#458588",
+    cterm_color = "65",
+    name = "vite",
+  },
+}
+
+require("nvim-web-devicons").set_icon {
+  ["webpack.config.ts"] = {
+    icon = "",
+    color = "#458588",
+    cterm_color = "65",
+    name = "webpack",
+  },
+}
+
+require("nvim-web-devicons").set_icon {
+  ["stylelintrc"] = {
+    icon = "",
+    color = "#FFFFFF",
+    cterm_color = "65",
+    name = "stylelint",
   },
 }
 

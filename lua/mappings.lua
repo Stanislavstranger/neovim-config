@@ -7,19 +7,19 @@ map("n", "<leader>w", "<cmd>w<CR>", { desc = "Save" })
 map("n", "<leader>x", "<cmd>bdelete<CR>", { desc = "Close Buffer" })
 map("n", "<leader>q", function()
   local current_buf = vim.api.nvim_get_current_buf()
-  local bufs = vim.fn.getbufinfo({ buflisted = 1 })
+  local bufs = vim.fn.getbufinfo { buflisted = 1 }
 
   -- If there's only one listed buffer, we need to handle it specially to keep the window open.
   if #bufs <= 1 then
     if vim.bo[current_buf].modified then
       local choice = vim.fn.confirm("Buffer has unsaved changes. Save?", "&Yes\n&No\n&Cancel")
       if choice == 1 then -- Yes
-        vim.cmd("write")
+        vim.cmd "write"
       elseif choice == 3 then -- Cancel
         return -- Abort the operation
       end
     end
-    vim.cmd("enew | bdelete#")
+    vim.cmd "enew | bdelete#"
     return
   end
 
@@ -41,12 +41,12 @@ map("n", "<leader>q", function()
     if vim.bo[current_buf].modified then
       local choice = vim.fn.confirm("Buffer has unsaved changes. Save?", "&Yes\n&No\n&Cancel")
       if choice == 1 then -- Yes
-        vim.cmd("write")
+        vim.cmd "write"
       elseif choice == 3 then -- Cancel
         return -- Abort the operation
       end
     end
-    vim.cmd("enew | bdelete#")
+    vim.cmd "enew | bdelete#"
   end
 end, { desc = "Close Buffer & Keep Window (with prompt)" })
 map("n", "<leader>cx", function()
@@ -122,7 +122,7 @@ end, { desc = "Toogle Terminal Float" })
 map("t", "<C-]>", function()
   require("nvchad.term").toggle { pos = "vsp" }
 end, { desc = "Toogle Terminal Vertical" })
-map("t", "<C-\\>", function()
+map("t", "<C->", function()
   require("nvchad.term").toggle { pos = "sp" }
 end, { desc = "Toogle Terminal Horizontal" })
 map("t", "<C-f>", function()
@@ -156,4 +156,21 @@ map("t", "<c-h>", "<C-h>", { desc = "Terminal backspace" })
 map("t", "<c-j>", "<C-j>", { desc = "Terminal newline" })
 map("t", "<c-k>", "<C-k>", { desc = "Terminal up" })
 
+map("t", "<C-]>", function()
+  require("nvchad.term").toggle { pos = "vsp" }
+end, { desc = "Toogle Terminal Vertical" })
+map("t", "<C->", function()
+  require("nvchad.term").toggle { pos = "sp" }
+end, { desc = "Toogle Terminal Horizontal" })
+map("t", "<C-f>", function()
+  require("nvchad.term").toggle { pos = "float" }
+end, { desc = "Toogle Terminal Float" })
+
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
+
+-- Move
+map("n", "<A-j>", ":m .+1<CR>==", { desc = "Move down" })
+map("n", "<A-k>", ":m .-2<CR>==", { desc = "Move up" })
+map("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move down" })
+map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move up" })
+

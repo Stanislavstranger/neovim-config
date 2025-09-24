@@ -60,6 +60,9 @@ return {
         "typescript-language-server",
         "tailwindcss-language-server",
         "svelte-language-server",
+        "jsonls",
+        "graphql-language-service-cli",
+        -- "angular-language-server", -- NOTE: Using global install
       },
     },
   },
@@ -367,6 +370,13 @@ return {
     priority = 1,
     config = function()
       require("langmapper").setup {}
+    end,
+  },
+  {
+    "echasnovski/mini.move",
+    version = "*",
+    config = function()
+      require("mini.move").setup()
     end,
   },
   {

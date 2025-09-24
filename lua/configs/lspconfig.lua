@@ -38,6 +38,7 @@ capabilities.textDocument.codeAction = {
 }
 
 local lspconfig = require "lspconfig"
+local util = require "lspconfig.util"
 
 lspconfig.ts_ls.setup {
   on_attach = on_attach,
@@ -137,6 +138,8 @@ local servers = {
   "sqlls",
   "angularls",
   "svelte",
+  "yamlls",
+  "jsonls",
 }
 
 local function organize_imports()
@@ -168,6 +171,30 @@ for _, lsp in ipairs(servers) do
     },
   }
 end
+
+lspconfig.graphql.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = {
+    "graphql",
+    "gql",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue",
+    "svelte",
+  },
+  root_dir = util.root_pattern(
+    ".git",
+    "package.json",
+    "graphql.config.json",
+    "graphql.config.js",
+    "graphql.config.ts",
+    "graphql.config.yaml",
+    "graphql.config.yml"
+  ),
+}
 
 lspconfig.tailwindcss.setup {
   on_attach = on_attach,
