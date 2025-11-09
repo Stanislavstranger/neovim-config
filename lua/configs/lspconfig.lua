@@ -40,6 +40,24 @@ capabilities.textDocument.codeAction = {
 local lspconfig = require "lspconfig"
 local util = require "lspconfig.util"
 
+local function get_python_path(workspace)
+  if vim.env.VIRTUAL_ENV and vim.env.VIRTUAL_ENV ~= "" then
+    local venv_python = util.path.join(vim.env.VIRTUAL_ENV, "bin", "python")
+    if vim.fn.executable(venv_python) == 1 then
+      return venv_python
+    end
+  end
+
+  for _, pattern in ipairs { ".venv", "venv", "env" } do
+    local python = util.path.join(workspace, pattern, "bin", "python")
+    if vim.fn.executable(python) == 1 then
+      return python
+    end
+  end
+
+  return vim.fn.exepath "python" or "python"
+end
+
 lspconfig.ts_ls.setup {
   on_attach = on_attach,
   capabilities = capabilities,
@@ -171,6 +189,35 @@ for _, lsp in ipairs(servers) do
     },
   }
 end
+
+lspconfig.pyright.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  before_init = function(_, config)
+    config.settings = config.settings or {}
+    config.settings.python = config.settings.python or {}
+    config.settings.python.pythonPath = get_python_path(config.root_dir)
+  end,
+  settings = {
+    python = {
+      analysis = {
+        autoImportCompletions = true,
+        autoSearchPaths = true,
+        diagnosticMode = "workspace",
+        typeCheckingMode = "basic",
+        useLibraryCodeForTypes = true,
+      },
+    },
+  },
+}
+
+lspconfig.ruff_lsp.setup {
+  on_attach = function(client, bufnr)
+    client.server_capabilities.hoverProvider = false
+    on_attach(client, bufnr)
+  end,
+  capabilities = capabilities,
+}
 
 lspconfig.graphql.setup {
   on_attach = on_attach,
