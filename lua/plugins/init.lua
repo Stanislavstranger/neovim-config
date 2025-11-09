@@ -346,6 +346,7 @@ return {
           ignore = false,
         },
       }
+      require("configs.nvimtree_tooltip").setup()
     end,
   },
   {

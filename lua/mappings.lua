@@ -56,10 +56,10 @@ end, { desc = "Close All Buffers" })
 map("n", "<leader>ft", "<cmd>TodoTelescope<CR>", { desc = "Find Todo" })
 map("n", "\\", "<cmd>:vsplit <CR>", { desc = "Vertical Split" })
 map("n", "<leader>-", "<cmd>split<CR>", { desc = "Horizontal Split" })
-map("n", "<c-l>", "<cmd>:TmuxNavigateRight<cr>", { desc = "Tmux Right" })
-map("n", "<c-h>", "<cmd>:TmuxNavigateLeft<cr>", { desc = "Tmux Left" })
-map("n", "<c-k>", "<cmd>:TmuxNavigateUp<cr>", { desc = "Tmux Up" })
-map("n", "<c-j>", "<cmd>:TmuxNavigateDown<cr>", { desc = "Tmux Down" })
+map("n", "<c-l>", "<cmd>TmuxNavigateRight<cr>", { desc = "Tmux Right", silent = true })
+map("n", "<c-h>", "<cmd>TmuxNavigateLeft<cr>", { desc = "Tmux Left", silent = true })
+map("n", "<c-k>", "<cmd>TmuxNavigateUp<cr>", { desc = "Tmux Up", silent = true })
+map("n", "<c-j>", "<cmd>TmuxNavigateDown<cr>", { desc = "Tmux Down", silent = true })
 
 -- Trouble
 
@@ -168,9 +168,12 @@ end, { desc = "Toogle Terminal Float" })
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 
+-- Tabs
+map("n", "<leader>tn", "<cmd>tabnext<CR>", { desc = "Next tab" })
+map("n", "<leader>tp", "<cmd>tabprevious<CR>", { desc = "Previous tab" })
+
 -- Move
 map("n", "<A-j>", ":m .+1<CR>==", { desc = "Move down" })
 map("n", "<A-k>", ":m .-2<CR>==", { desc = "Move up" })
 map("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move down" })
 map("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move up" })
-
