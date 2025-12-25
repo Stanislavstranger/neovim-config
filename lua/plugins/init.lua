@@ -53,16 +53,29 @@ return {
         "stylua",
         "html-lsp",
         "css-lsp",
-        "prettierd",
-        "eslint-lsp",
-        "gopls",
-        "js-debug-adapter",
         "typescript-language-server",
+        "eslint-lsp",
+        "eslint_d",
+        "prettierd",
         "tailwindcss-language-server",
         "svelte-language-server",
-        "jsonls",
+        "json-lsp",
         "graphql-language-service-cli",
-        -- "angular-language-server", -- NOTE: Using global install
+        "gopls",
+        "clangd",
+        "gradle-language-server",
+        "emmet-language-server",
+        "docker-compose-language-service",
+        "dockerfile-language-server",
+        "sqlls",
+        "angular-language-server",
+        "yaml-language-server",
+        "pyright",
+        "ruff",
+        "black",
+        "prisma-language-server",
+        "vue-language-server",
+        "node-debug2-adapter",
       },
     },
   },
@@ -92,12 +105,6 @@ return {
     event = "VeryLazy",
     config = function()
       require "configs.lint"
-    end,
-  },
-  {
-    "neovim/nvim-lspconfig",
-    config = function()
-      require "configs.lspconfig"
     end,
   },
   {
@@ -226,11 +233,6 @@ return {
     lazy = false,
   },
   {
-    "folke/trouble.nvim",
-    lazy = false,
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-  },
-  {
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     lazy = false,
@@ -302,27 +304,6 @@ return {
     },
   },
   {
-    "stevearc/conform.nvim",
-    event = "BufWritePre",
-    config = function()
-      require "configs.conform"
-    end,
-  },
-  {
-    "neovim/nvim-lspconfig",
-    config = function()
-      require("nvchad.configs.lspconfig").defaults()
-      require "configs.lspconfig"
-    end,
-  },
-  {
-    "mfussenegger/nvim-lint",
-    event = "VeryLazy",
-    config = function()
-      require "configs.lint"
-    end,
-  },
-  {
     "nvim-tree/nvim-tree.lua",
     config = function()
       require("nvim-tree").setup {
@@ -351,6 +332,7 @@ return {
   },
   {
     "folke/trouble.nvim",
+    lazy = false,
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require("trouble").setup {

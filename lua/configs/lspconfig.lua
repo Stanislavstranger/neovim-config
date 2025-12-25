@@ -37,7 +37,6 @@ capabilities.textDocument.codeAction = {
   },
 }
 
-local lspconfig = require "lspconfig"
 local util = require "lspconfig.util"
 
 local function get_python_path(workspace)
@@ -57,55 +56,6 @@ local function get_python_path(workspace)
 
   return vim.fn.exepath "python" or "python"
 end
-
-lspconfig.ts_ls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  settings = {
-    typescript = {
-      inlayHints = {
-        includeInlayParameterNameHints = "all",
-        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-        includeInlayFunctionParameterTypeHints = true,
-        includeInlayVariableTypeHints = true,
-        includeInlayPropertyDeclarationTypeHints = true,
-        includeInlayFunctionLikeReturnTypeHints = true,
-        includeInlayEnumMemberValueHints = true,
-      },
-    },
-    javascript = {
-      inlayHints = {
-        includeInlayParameterNameHints = "all",
-        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-        includeInlayFunctionParameterTypeHints = true,
-        includeInlayVariableTypeHints = true,
-        includeInlayPropertyDeclarationTypeHints = true,
-        includeInlayFunctionLikeReturnTypeHints = true,
-        includeInlayEnumMemberValueHints = true,
-      },
-    },
-  },
-}
-
-lspconfig.eslint.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  settings = {
-    codeAction = {
-      disableRuleComment = {
-        enable = true,
-        location = "separateLine",
-      },
-      showDocumentation = {
-        enable = true,
-      },
-    },
-    codeActionOnSave = {
-      enable = false,
-      mode = "all",
-    },
-  },
-}
 
 local function db_completion()
   require("cmp").setup.buffer { sources = { { name = "vim-dadbod-completion" } } }
@@ -143,23 +93,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-local servers = {
-  "html",
-  "cssls",
-  "ts_ls",
-  "clangd",
-  "gopls",
-  "gradle_ls",
-  "emmet_ls",
-  "docker_compose_language_service",
-  "dockerls",
-  "sqlls",
-  "angularls",
-  "svelte",
-  "yamlls",
-  "jsonls",
-}
-
 local function organize_imports()
   local params = {
     command = "_typescript.organizeImports",
@@ -168,10 +101,17 @@ local function organize_imports()
   vim.lsp.buf.execute_command(params)
 end
 
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
+local base_config = {
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+
+local function with_base(extra)
+  return vim.tbl_deep_extend("force", {}, base_config, extra or {})
+end
+
+local function with_generic(extra)
+  return vim.tbl_deep_extend("force", {}, base_config, {
     commands = {
       OrganizeImports = {
         organize_imports,
@@ -187,103 +127,175 @@ for _, lsp in ipairs(servers) do
         },
       },
     },
-  }
+  }, extra or {})
 end
 
-lspconfig.pyright.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  before_init = function(_, config)
-    config.settings = config.settings or {}
-    config.settings.python = config.settings.python or {}
-    config.settings.python.pythonPath = get_python_path(config.root_dir)
-  end,
-  settings = {
-    python = {
-      analysis = {
-        autoImportCompletions = true,
-        autoSearchPaths = true,
-        diagnosticMode = "workspace",
-        typeCheckingMode = "basic",
-        useLibraryCodeForTypes = true,
+local configs_by_server = {
+  html = with_generic(),
+  cssls = with_generic(),
+  ts_ls = with_generic({
+    settings = {
+      typescript = {
+        inlayHints = {
+          includeInlayParameterNameHints = "all",
+          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayVariableTypeHints = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayEnumMemberValueHints = true,
+        },
+      },
+      javascript = {
+        inlayHints = {
+          includeInlayParameterNameHints = "all",
+          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayVariableTypeHints = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayEnumMemberValueHints = true,
+        },
       },
     },
-  },
-}
-
-lspconfig.ruff_lsp.setup {
-  on_attach = function(client, bufnr)
-    client.server_capabilities.hoverProvider = false
-    on_attach(client, bufnr)
-  end,
-  capabilities = capabilities,
-}
-
-lspconfig.graphql.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  filetypes = {
-    "graphql",
-    "gql",
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "vue",
-    "svelte",
-  },
-  root_dir = util.root_pattern(
-    ".git",
-    "package.json",
-    "graphql.config.json",
-    "graphql.config.js",
-    "graphql.config.ts",
-    "graphql.config.yaml",
-    "graphql.config.yml"
-  ),
-}
-
-lspconfig.tailwindcss.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  filetypes = {
-    "angular",
-    "css",
-    "html",
-    "javascript",
-    "javascriptreact",
-    "scss",
-    "typescript",
-    "typescriptreact",
-    "vue",
-    "svelte",
-  },
-}
-
--- Setup for Prisma language server
-lspconfig.prismals.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-}
-
--- Setup for Volar (Vue.js) language server
-lspconfig.volar.setup {
-  on_attach = on_attach,
-  filetypes = { "vue" },
-  init_options = {
-    vue = {
-      hybridMode = false,
+  }),
+  clangd = with_generic(),
+  gopls = with_generic(),
+  gradle_ls = with_generic(),
+  emmet_ls = with_generic(),
+  dockerls = with_generic(),
+  sqlls = with_generic(),
+  angularls = with_generic(),
+  svelte = with_generic(),
+  yamlls = with_generic(),
+  jsonls = with_generic(),
+  eslint = with_base({
+    settings = {
+      codeAction = {
+        disableRuleComment = {
+          enable = true,
+          location = "separateLine",
+        },
+        showDocumentation = {
+          enable = true,
+        },
+      },
+      codeActionOnSave = {
+        enable = false,
+        mode = "all",
+      },
     },
-  },
+  }),
+  pyright = with_base({
+    before_init = function(_, config)
+      config.settings = config.settings or {}
+      config.settings.python = config.settings.python or {}
+      config.settings.python.pythonPath = get_python_path(config.root_dir)
+    end,
+    settings = {
+      python = {
+        analysis = {
+          autoImportCompletions = true,
+          autoSearchPaths = true,
+          diagnosticMode = "workspace",
+          typeCheckingMode = "basic",
+          useLibraryCodeForTypes = true,
+        },
+      },
+    },
+  }),
+  ruff = with_base({
+    on_attach = function(client, bufnr)
+      client.server_capabilities.hoverProvider = false
+      on_attach(client, bufnr)
+    end,
+  }),
+  graphql = with_base({
+    filetypes = {
+      "graphql",
+      "gql",
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact",
+      "vue",
+      "svelte",
+    },
+    root_dir = function(bufnr, on_dir)
+      local fname = vim.api.nvim_buf_get_name(bufnr)
+      on_dir(util.root_pattern(
+        ".git",
+        "package.json",
+        "graphql.config.json",
+        "graphql.config.js",
+        "graphql.config.ts",
+        "graphql.config.yaml",
+        "graphql.config.yml"
+      )(fname))
+    end,
+  }),
+  tailwindcss = with_base({
+    filetypes = {
+      "angular",
+      "css",
+      "html",
+      "javascript",
+      "javascriptreact",
+      "scss",
+      "typescript",
+      "typescriptreact",
+      "vue",
+      "svelte",
+    },
+  }),
+  prismals = with_base(),
+  vue_ls = with_base({
+    filetypes = { "vue" },
+    init_options = {
+      vue = {
+        hybridMode = false,
+      },
+    },
+  }),
+  docker_compose_language_service = with_base({
+    filetypes = { "yaml" },
+    settings = {
+      dockerComposeLanguageService = {
+        enable = true,
+      },
+    },
+  }),
 }
 
-lspconfig.docker_compose_language_service.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  filetypes = { "yaml" },
-  settings = {
-    dockerComposeLanguageService = {
-      enable = true,
-    },
-  },
+local enabled_servers = {
+  "html",
+  "cssls",
+  "ts_ls",
+  "clangd",
+  "gopls",
+  "gradle_ls",
+  "emmet_ls",
+  "dockerls",
+  "sqlls",
+  "angularls",
+  "svelte",
+  "yamlls",
+  "jsonls",
+  "eslint",
+  "pyright",
+  "ruff",
+  "graphql",
+  "tailwindcss",
+  "prismals",
+  "vue_ls",
+  "docker_compose_language_service",
 }
+
+for _, server in ipairs(enabled_servers) do
+  local config = configs_by_server[server]
+  if config then
+    vim.lsp.config(server, config)
+  end
+end
+
+vim.lsp.enable(enabled_servers)

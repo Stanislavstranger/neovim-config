@@ -1,4 +1,7 @@
-vim.g.base46_cache = vim.fn.stdpath "data" .. "/nvchad/base46/"
+-- Pick the base46 cache that actually exists (some installs write to data/base46)
+local base46_default = vim.fn.stdpath "data" .. "/nvchad/base46/"
+local base46_fallback = vim.fn.stdpath "data" .. "/base46/"
+vim.g.base46_cache = vim.fn.isdirectory(base46_default) == 1 and base46_default or base46_fallback
 vim.g.mapleader = " "
 
 -- bootstrap lazy and all plugins
