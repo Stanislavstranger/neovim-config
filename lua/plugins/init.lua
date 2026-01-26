@@ -432,4 +432,64 @@ return {
     ---@type render.md.UserConfig
     opts = { render_modes = { "n", "c", "t" } },
   },
+  {
+    "folke/snacks.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("snacks").setup {
+        input = {},
+        picker = {},
+        terminal = {},
+      }
+    end,
+  },
+  {
+    "NickvanDyke/opencode.nvim",
+    lazy = false,
+    dependencies = {
+      "folke/snacks.nvim",
+    },
+    config = function()
+      vim.o.autoread = true
+
+      local opencode = require "opencode"
+      local map = vim.keymap.set
+
+      map({ "n", "x" }, "<leader>aa", function()
+        opencode.ask("@this: ", { submit = true })
+      end, { desc = "Ask opencode…" })
+      map({ "n", "x" }, "<leader>as", function()
+        opencode.select()
+      end, { desc = "Execute opencode action…" })
+      map({ "n", "t" }, "<leader>ac", function()
+        opencode.toggle()
+      end, { desc = "Toggle opencode" })
+      map({ "n", "x" }, "<leader>ao", function()
+        return opencode.operator "@this "
+      end, { desc = "Add range to opencode", expr = true })
+      map("n", "<leader>ap", function()
+        return opencode.operator "@this " .. "_"
+      end, { desc = "Add line to opencode", expr = true })
+
+      map("n", "<leader>au", function()
+        opencode.command "session.undo"
+      end, { desc = "Undo last action" })
+      map("n", "<leader>ar", function()
+        opencode.command "session.redo"
+      end, { desc = "Redo last action" })
+      map("n", "<leader>apu", function()
+        opencode.command "session.page.up"
+      end, { desc = "Scroll opencode up (page)" })
+      map("n", "<leader>apd", function()
+        opencode.command "session.page.down"
+      end, { desc = "Scroll opencode down (page)" })
+      map("n", "<leader>ahu", function()
+        opencode.command "session.half.page.up"
+      end, { desc = "Scroll opencode up (half page)" })
+      map("n", "<leader>ahd", function()
+        opencode.command "session.half.page.down"
+      end, { desc = "Scroll opencode down (half page)" })
+    end,
+  },
 }
