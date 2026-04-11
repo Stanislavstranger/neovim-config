@@ -212,6 +212,30 @@ require("render-markdown").setup {
   completions = { lsp = { enabled = true } },
 }
 
+local function sanitize_markdown_undo_ftplugin(bufnr)
+  local undo = vim.b[bufnr].undo_ftplugin
+  if type(undo) ~= "string" or undo == "" then
+    return
+  end
+
+  local filtered = {}
+  for _, line in ipairs(vim.split(undo, "\n", { plain = true })) do
+    if not line:match('^%s*sil! exe "nunmap <buffer> gO"$')
+      and not line:match('^%s*sil! exe "nunmap <buffer> %]%]" | sil! exe "nunmap <buffer> %[%["$') then
+      table.insert(filtered, line)
+    end
+  end
+
+  vim.b[bufnr].undo_ftplugin = table.concat(filtered, "\n")
+end
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function(args)
+    sanitize_markdown_undo_ftplugin(args.buf)
+  end,
+})
+
 -- load theme
 dofile(vim.g.base46_cache .. "defaults")
 dofile(vim.g.base46_cache .. "statusline")

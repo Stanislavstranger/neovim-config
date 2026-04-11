@@ -53,7 +53,7 @@ map("n", "<leader>cx", function()
   require("nvchad.tabufline").closeAllBufs()
 end, { desc = "Close All Buffers" })
 
-map("n", "<leader>ft", "<cmd>TodoTelescope<CR>", { desc = "Find Todo" })
+map("n", "<leader>fT", "<cmd>TodoTelescope<CR>", { desc = "Find Todo" })
 map("n", "\\", "<cmd>:vsplit <CR>", { desc = "Vertical Split" })
 map("n", "<leader>-", "<cmd>split<CR>", { desc = "Horizontal Split" })
 map("n", "<c-l>", "<cmd>TmuxNavigateRight<cr>", { desc = "Tmux Right", silent = true })
@@ -96,7 +96,7 @@ end, { desc = "Step Over" })
 
 -- Git
 map("n", "<leader>gl", ":Flog<CR>", { desc = "Git Log" })
-map("n", "<leader>gf", ":DiffviewFileHistory<CR>", { desc = "Git File History" })
+map("n", "<leader>gh", ":DiffviewFileHistory<CR>", { desc = "Git File History" })
 map("n", "<leader>gc", ":DiffviewOpen HEAD~1<CR>", { desc = "Git Last Commit" })
 map("n", "<leader>gt", ":DiffviewToggleFile<CR>", { desc = "Git File History" })
 map("n", "<leader>gp", ":Gitsigns preview_hunk_inline<CR>", { desc = "Gitsigns priview hunk inline" })
@@ -112,22 +112,22 @@ map("n", "<leader>pe", ":Telescope emoji<CR>", { desc = "Paste emoji" })
 -- Terminal
 map("n", "<C-]>", function()
   require("nvchad.term").toggle { pos = "vsp", size = 0.4 }
-end, { desc = "Toogle Terminal Vertical" })
+end, { desc = "Toggle Terminal Vertical" })
 map("n", "<C-\\>", function()
   require("nvchad.term").toggle { pos = "sp", size = 0.4 }
-end, { desc = "Toogle Terminal Horizontal" })
+end, { desc = "Toggle Terminal Horizontal" })
 map("n", "<C-f>", function()
   require("nvchad.term").toggle { pos = "float" }
-end, { desc = "Toogle Terminal Float" })
+end, { desc = "Toggle Terminal Float" })
 map("t", "<C-]>", function()
   require("nvchad.term").toggle { pos = "vsp" }
-end, { desc = "Toogle Terminal Vertical" })
-map("t", "<C->", function()
+end, { desc = "Toggle Terminal Vertical" })
+map("t", "<C-\\>", function()
   require("nvchad.term").toggle { pos = "sp" }
-end, { desc = "Toogle Terminal Horizontal" })
+end, { desc = "Toggle Terminal Horizontal" })
 map("t", "<C-f>", function()
   require("nvchad.term").toggle { pos = "float" }
-end, { desc = "Toogle Terminal Float" })
+end, { desc = "Toggle Terminal Float" })
 
 -- Basic
 
@@ -155,16 +155,6 @@ map("t", "<c-l>", "<C-l>", { desc = "Clear terminal screen" })
 map("t", "<c-h>", "<C-h>", { desc = "Terminal backspace" })
 map("t", "<c-j>", "<C-j>", { desc = "Terminal newline" })
 map("t", "<c-k>", "<C-k>", { desc = "Terminal up" })
-
-map("t", "<C-]>", function()
-  require("nvchad.term").toggle { pos = "vsp" }
-end, { desc = "Toogle Terminal Vertical" })
-map("t", "<C->", function()
-  require("nvchad.term").toggle { pos = "sp" }
-end, { desc = "Toogle Terminal Horizontal" })
-map("t", "<C-f>", function()
-  require("nvchad.term").toggle { pos = "float" }
-end, { desc = "Toogle Terminal Float" })
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
 

@@ -130,10 +130,35 @@ local function with_generic(extra)
   }, extra or {})
 end
 
+local function find_root(fname, markers)
+  return util.root_pattern(unpack(markers))(fname)
+end
+
 local configs_by_server = {
   html = with_generic(),
   cssls = with_generic(),
   ts_ls = with_generic({
+    root_dir = function(bufnr, on_dir)
+      local fname = vim.api.nvim_buf_get_name(bufnr)
+      local deno_root = find_root(fname, { "deno.json", "deno.jsonc", "deno.lock" })
+      local project_root = find_root(fname, {
+        "tsconfig.json",
+        "jsconfig.json",
+        "package.json",
+        "package-lock.json",
+        "yarn.lock",
+        "pnpm-lock.yaml",
+        "bun.lockb",
+        "bun.lock",
+        ".git",
+      })
+
+      if deno_root and (not project_root or #deno_root >= #project_root) then
+        return
+      end
+
+      on_dir(project_root or vim.fs.dirname(fname) or vim.fn.getcwd())
+    end,
     settings = {
       typescript = {
         inlayHints = {
@@ -169,7 +194,41 @@ local configs_by_server = {
   svelte = with_generic(),
   yamlls = with_generic(),
   jsonls = with_generic(),
+  marksman = with_base(),
   eslint = with_base({
+    root_dir = function(bufnr, on_dir)
+      local fname = vim.api.nvim_buf_get_name(bufnr)
+      local deno_root = find_root(fname, { "deno.json", "deno.jsonc", "deno.lock" })
+      local project_root = find_root(fname, {
+        "eslint.config.js",
+        "eslint.config.cjs",
+        "eslint.config.mjs",
+        "eslint.config.ts",
+        "eslint.config.mts",
+        "eslint.config.cts",
+        ".eslintrc",
+        ".eslintrc.js",
+        ".eslintrc.cjs",
+        ".eslintrc.yaml",
+        ".eslintrc.yml",
+        ".eslintrc.json",
+        "package.json",
+        "package-lock.json",
+        "yarn.lock",
+        "pnpm-lock.yaml",
+        "bun.lockb",
+        "bun.lock",
+        ".git",
+      })
+
+      if deno_root and (not project_root or #deno_root >= #project_root) then
+        return
+      end
+
+      if project_root then
+        on_dir(project_root)
+      end
+    end,
     settings = {
       codeAction = {
         disableRuleComment = {
@@ -281,6 +340,7 @@ local enabled_servers = {
   "svelte",
   "yamlls",
   "jsonls",
+  "marksman",
   "eslint",
   "pyright",
   "ruff",
