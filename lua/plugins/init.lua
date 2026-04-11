@@ -226,10 +226,15 @@ return {
   }, lazy = false },
   { "sindrets/diffview.nvim", lazy = false },
   {
-    "ggandor/leap.nvim",
+    url = "https://codeberg.org/andyg/leap.nvim",
+    name = "leap.nvim",
     lazy = false,
     config = function()
-      require("leap").add_default_mappings(true)
+      vim.keymap.set({ "n", "x", "o" }, "s", "<Plug>(leap-forward)", { silent = true, desc = "Leap forward" })
+      vim.keymap.set({ "n", "x", "o" }, "S", "<Plug>(leap-backward)", { silent = true, desc = "Leap backward" })
+      vim.keymap.set({ "x", "o" }, "x", "<Plug>(leap-forward-till)", { silent = true, desc = "Leap forward till" })
+      vim.keymap.set({ "x", "o" }, "X", "<Plug>(leap-backward-till)", { silent = true, desc = "Leap backward till" })
+      vim.keymap.set({ "n", "x", "o" }, "gs", "<Plug>(leap-from-window)", { silent = true, desc = "Leap from window" })
     end,
   },
   {
