@@ -8,7 +8,7 @@ local options = {
     typescriptreact = { "prettierd" },
     javascriptreact = { "prettierd" },
     json = { "prettierd" },
-    python = { "ruff_format", "black" },
+    python = { "ruff_format", "black", stop_after_first = true },
   },
 
   format_on_save = {

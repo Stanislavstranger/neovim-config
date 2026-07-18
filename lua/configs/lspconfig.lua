@@ -2,6 +2,9 @@ local configs = require "nvchad.configs.lspconfig"
 
 local on_attach = function(client, bufnr)
   configs.on_attach(client, bufnr)
+  if client.server_capabilities.inlayHintProvider then
+    vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+  end
   vim.api.nvim_buf_set_keymap(
     bufnr,
     "n",
@@ -47,10 +50,12 @@ local function get_python_path(workspace)
     end
   end
 
-  for _, pattern in ipairs { ".venv", "venv", "env" } do
-    local python = util.path.join(workspace, pattern, "bin", "python")
-    if vim.fn.executable(python) == 1 then
-      return python
+  if workspace then
+    for _, pattern in ipairs { ".venv", "venv", "env" } do
+      local python = util.path.join(workspace, pattern, "bin", "python")
+      if vim.fn.executable(python) == 1 then
+        return python
+      end
     end
   end
 

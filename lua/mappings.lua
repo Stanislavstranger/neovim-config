@@ -63,11 +63,11 @@ map("n", "<c-j>", "<cmd>TmuxNavigateDown<cr>", { desc = "Tmux Down", silent = tr
 
 -- Trouble
 
-map("n", "<leader>qx", "<cmd>TroubleToggle<CR>", { desc = "Open Trouble" })
-map("n", "<leader>qw", "<cmd>TroubleToggle workspace_diagnostics<CR>", { desc = "Open Workspace Trouble" })
-map("n", "<leader>qd", "<cmd>TroubleToggle document_diagnostics<CR>", { desc = "Open Document Trouble" })
-map("n", "<leader>qq", "<cmd>TroubleToggle quickfix<CR>", { desc = "Open Quickfix" })
-map("n", "<leader>ql", "<cmd>TroubleToggle loclist<CR>", { desc = "Open Location List" })
+map("n", "<leader>qx", "<cmd>Trouble diagnostics toggle<CR>", { desc = "Open Trouble" })
+map("n", "<leader>qw", "<cmd>Trouble diagnostics toggle<CR>", { desc = "Open Workspace Trouble" })
+map("n", "<leader>qd", "<cmd>Trouble diagnostics toggle filter.buf=0<CR>", { desc = "Open Document Trouble" })
+map("n", "<leader>qq", "<cmd>Trouble qflist toggle<CR>", { desc = "Open Quickfix" })
+map("n", "<leader>ql", "<cmd>Trouble loclist toggle<CR>", { desc = "Open Location List" })
 map("n", "<leader>qt", "<cmd>TodoTrouble<CR>", { desc = "Open Todo Trouble" })
 
 -- Tests

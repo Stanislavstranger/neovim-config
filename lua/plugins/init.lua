@@ -221,9 +221,13 @@ return {
     end,
   },
   { "tpope/vim-fugitive" },
-  { "rbong/vim-flog", dependencies = {
-    "tpope/vim-fugitive",
-  }, lazy = false },
+  {
+    "rbong/vim-flog",
+    cmd = { "Flog", "Flogsplit", "Floggit" },
+    dependencies = {
+      "tpope/vim-fugitive",
+    },
+  },
   { "sindrets/diffview.nvim", lazy = false },
   {
     url = "https://codeberg.org/andyg/leap.nvim",
@@ -343,18 +347,7 @@ return {
     "folke/trouble.nvim",
     lazy = false,
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-      require("trouble").setup {
-        mode = "workspace_diagnostics",
-        signs = {
-          error = "",
-          warning = "",
-          hint = "",
-          information = "",
-        },
-        use_diagnostic_signs = true,
-      }
-    end,
+    opts = {},
   },
   {
     "Wansmer/langmapper.nvim",
@@ -377,13 +370,13 @@ return {
     opts = {},
     keys = {
       {
-        "<C-j>",
+        "<C-Down>",
         "<Cmd>MultipleCursorsAddDown<CR>",
         mode = { "n", "x" },
         desc = "Добавить курсор и переместить вниз",
       },
       {
-        "<C-k>",
+        "<C-Up>",
         "<Cmd>MultipleCursorsAddUp<CR>",
         mode = { "n", "x" },
         desc = "Добавить курсор и переместить вверх",
